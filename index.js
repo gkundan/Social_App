@@ -6,6 +6,10 @@ const port = 8000;
 ///****     --- used express router         */
 app.use("/", require("./routes"));
 
+///****     --- Views Engine..     */
+app.set("view engine", "ejs");
+app.set("views", "./views");
+
 //******    -- FireUp the Server >     */
 app.listen(port, (err) => {
   if (err) {
