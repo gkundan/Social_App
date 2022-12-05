@@ -2,8 +2,9 @@
 
 // profile render or userHome page
 module.exports.profile = function (req, res) {
-  return res.render("userprofile", {
-    title: "UserProfile",
+  //first we'll see if any userId in cookies
+  res.render("userProfile", {
+    title: "User Profile",
   });
 };
 
