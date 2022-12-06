@@ -1,3 +1,4 @@
+const User = require("../models/user");
 ////******    All the User Action Controller */
 
 // profile render or userHome page
@@ -12,13 +13,34 @@ module.exports.profile = function (req, res) {
 
 module.exports.signUp = function (req, res) {
   return res.render("user_signUp", {
-    title: "Codial/SignUp",
+    title: "Codeial/SignUp",
   });
 };
 
 //get the signup data
 module.exports.create = function (req, res) {
-  //later gator
+  //check the password are matched.
+  if (req.body.password != req.body.confirm_password) {
+    return res.redirect("back");
+  }
+  //check the email as the user should be logIn before.
+  User.findOne({ email: req.body.email }, function (err, user) {
+    if (err) {
+      console.log("error in finding User in SignUp");
+      return;
+    }
+    if (!user) {
+      User.create(req.body, function (err, user) {
+        if (err) {
+          console.log("error in finding User in SignUp");
+          return;
+        }
+        return res.redirect("/users/sign-in");
+      });
+    } else {
+      return res.redirect("back");
+    }
+  });
 };
 
 ////***  sign In Action rendering */
