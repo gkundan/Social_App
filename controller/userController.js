@@ -53,5 +53,6 @@ module.exports.signIn = function (req, res) {
 
 //sign in session{session is like when the user sign Out is then there is no user }..
 module.exports.createSession = function (req, res) {
-  /// later gator
+  /// passport session..'
+  return res.redirect("/")
 };
