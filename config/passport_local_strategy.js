@@ -39,7 +39,7 @@ passport.deserializeUser(function (id, done) {
       console.log("Error in finding user --> passport.");
       return done(err);
     }
-    return done(null, user.id);
+    return done(null, user);
   });
 });
 

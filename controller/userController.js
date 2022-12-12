@@ -4,7 +4,7 @@ const User = require("../models/user");
 // profile render or userHome page
 module.exports.profile = function (req, res) {
   //first we'll see if any userId in cookies
-  res.render("userProfile", {
+  return res.render("userProfile", {
     title: "User Profile",
   });
 };
@@ -12,6 +12,10 @@ module.exports.profile = function (req, res) {
 ///new sign Up action rendering ******/
 
 module.exports.signUp = function (req, res) {
+  //if user is already in cookies then send to profile
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/profile");
+  }
   return res.render("user_signUp", {
     title: "Codeial/SignUp",
   });
@@ -46,6 +50,10 @@ module.exports.create = function (req, res) {
 ////***  sign In Action rendering */
 
 module.exports.signIn = function (req, res) {
+  //if user is in cookies then send to profile
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/profile");
+  }
   return res.render("user_sign_in", {
     title: "Codial/SignIn",
   });
@@ -54,5 +62,5 @@ module.exports.signIn = function (req, res) {
 //sign in session{session is like when the user sign Out is then there is no user }..
 module.exports.createSession = function (req, res) {
   /// passport session..'
-  return res.redirect("/")
+  return res.redirect("/");
 };
