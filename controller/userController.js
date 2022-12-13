@@ -64,3 +64,10 @@ module.exports.createSession = function (req, res) {
   /// passport session..'
   return res.redirect("/");
 };
+
+//sign Out action
+module.exports.destroySession = function (req, res) {
+  req.logout();
+
+  return res.redirect("/");
+};
