@@ -15,7 +15,7 @@ router.get("/", homeController.home);
 //all the user specific req sent to this routes
 router.use("/users", require("./userRoute"));
 //all the user posts req sent to this routes
-router.use("/users", require("./postRoutes"));
+router.use("/posts", require("./postRoutes"));
 
 //
 module.exports = router;
