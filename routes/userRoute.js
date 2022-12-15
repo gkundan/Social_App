@@ -10,8 +10,10 @@ router.get("/profile", passport.checkAuthentication, userController.profile);
 
 //route for signUp
 router.get("/sign-up", userController.signUp);
+
 //creating user
 router.post("/create", userController.create);
+
 //use passport as a middleware for authenticate
 router.post(
   "/create-session",
@@ -20,4 +22,7 @@ router.post(
 );
 //router for signIN...
 router.get("/sign-in", userController.signIn);
+
+//router for signOut
+router.get("/sign-out", userController.destroySession);
 module.exports = router;
