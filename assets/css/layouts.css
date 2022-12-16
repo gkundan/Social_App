@@ -2,7 +2,31 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  list-style: none; }
+
+h1 {
   text-align: center; }
 
-#main {
-  height: 78vh; }
+.post-form-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+.post-form-div textarea {
+  outline: none;
+  border: 1px solid #1f3b44; }
+
+.post-form-div button {
+  height: 35px;
+  width: 140px;
+  margin-left: 20%;
+  background: #728cf5;
+  border: none;
+  color: #fff;
+  font-weight: 600; }
+
+.post-form-div button:hover {
+  background: #264eec;
+  font-weight: 800;
+  transition: all 1s ease-in-out; }

@@ -2,9 +2,36 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  text-align: center;
-  // background: rgb(165, 209, 223);
+  list-style: none;
 }
-#main {
-  height: 78vh;
+// #main {
+//   height: 78vh;
+// }
+h1 {
+  text-align: center;
+}
+.post-form-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-form-div textarea {
+  outline: none;
+  border: 1px solid rgb(31, 59, 68);
+}
+.post-form-div button {
+  height: 35px;
+  width: 140px;
+  margin-left: 20%;
+  background: rgb(114, 140, 245);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+.post-form-div button:hover {
+  background: rgb(38, 78, 236);
+  font-weight: 800;
+  transition: all 1s ease-in-out;
 }
