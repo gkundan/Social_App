@@ -17,5 +17,7 @@ router.use("/users", require("./userRoute"));
 //all the user posts req sent to this routes
 router.use("/posts", require("./postRoutes"));
 
+//all the comment routes
+router.use("/comments", require("./comment"));
 //
 module.exports = router;

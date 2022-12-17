@@ -1,12 +1,17 @@
 <h1>User Sign In.</h1>
-<form action="/users/create-session" method="post">
-    <div>
-        <input type="email" name="email" placeholder="Your Email" required>
+<div class="sign-in-div">
+    <div class="signIn-div">
+        <form action="/users/create-session" method="post">
+            <div>
+                <input type="email" name="email" placeholder="Your Email" required>
+            </div>
+            <div>
+                <input type="password" name="password" placeholder=" Your Password" required>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
     </div>
-    <div>
-        <input type="password" name="password" placeholder=" Your Password" required>
-    </div>
-    <div>
-        <input type="submit" placeholder="Submit">
-    </div>
-</form>
+
+</div>
