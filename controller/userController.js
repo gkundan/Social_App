@@ -3,9 +3,11 @@ const User = require("../models/user");
 
 // profile render or userHome page
 module.exports.profile = function (req, res) {
-  //first we'll see if any userId in cookies
-  return res.render("userProfile", {
-    title: "User Profile",
+  User.findById(req.params.id, function (err, user) {
+    return res.render("userProfile", {
+      title: "User Profile",
+      profile_user: user,
+    });
   });
 };
 
