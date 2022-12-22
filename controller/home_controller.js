@@ -3,6 +3,7 @@ const Post = require("../models/post");
 const User = require("../models/user");
 //actions
 module.exports.home = function (req, res) {
+  //.
   // console.log(req.cookies);
   //**** simple way to find the posts */
   // Post.find({}, function (err, posts) {

@@ -12,8 +12,8 @@ router.get(
   userController.profile
 );
 
-//route for signUp
-router.get("/sign-up", userController.signUp);
+/// user update..
+router.post("/update/:id", passport.checkAuthentication, userController.update);
 
 //creating user
 router.post("/create", userController.create);
@@ -24,6 +24,10 @@ router.post(
   passport.authenticate("local", { failureRedirect: "/users/sign-in" }),
   userController.createSession
 );
+
+//route for signUp
+router.get("/sign-up", userController.signUp);
+
 //router for signIN...
 router.get("/sign-in", userController.signIn);
 
