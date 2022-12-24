@@ -6,38 +6,3 @@ body {
 
 h1 {
   text-align: center; }
-
-.post-form-div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; }
-
-.post-form-div textarea {
-  outline: none;
-  border: 1px solid #1f3b44; }
-
-.post-form-div button {
-  height: 35px;
-  width: 140px;
-  margin-left: 20%;
-  background: #728cf5;
-  border: none;
-  color: #fff;
-  font-weight: 600; }
-
-.post-form-div button:hover {
-  background: #264eec;
-  font-weight: 800;
-  transition: all 1s ease-in-out; }
-
-.sign-in-div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10%; }
-
-.sign-in-div form input {
-  margin: 15%;
-  padding: 1rem; }

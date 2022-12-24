@@ -12,6 +12,20 @@ router.get(
   userController.profile
 );
 
+//
+
+//route for signUp
+router.get("/sign-up", userController.signUp);
+
+//router for signIN...
+router.get("/sign-in", userController.signIn);
+
+//router for signOut
+router.get("/sign-out", userController.destroySession);
+module.exports = router;
+
+///
+
 /// user update..
 router.post("/update/:id", passport.checkAuthentication, userController.update);
 
@@ -24,13 +38,3 @@ router.post(
   passport.authenticate("local", { failureRedirect: "/users/sign-in" }),
   userController.createSession
 );
-
-//route for signUp
-router.get("/sign-up", userController.signUp);
-
-//router for signIN...
-router.get("/sign-in", userController.signIn);
-
-//router for signOut
-router.get("/sign-out", userController.destroySession);
-module.exports = router;

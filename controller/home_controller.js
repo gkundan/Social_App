@@ -1,36 +1,30 @@
 //create a controller and send on route ans use as request route..
 const Post = require("../models/post");
 const User = require("../models/user");
-//actions
-module.exports.home = function (req, res) {
-  //.
-  // console.log(req.cookies);
-  //**** simple way to find the posts */
-  // Post.find({}, function (err, posts) {
-  //   return res.render("home", {
-  //     title: "Codeial| Home",
-  //     posts: posts,
-  //   });
-  // });
 
-  //--- the populate in mongoose
-  Post.find({})
-    //finding the user
-    .populate("user")
-    //finding the comments
-    .populate({
-      path: "comments",
-      populate: {
-        path: "user",
-      },
-    })
-    .exec(function (err, posts) {
-      User.find({}, function (err, users) {
-        return res.render("home", {
-          title: "Codeial | Home",
-          posts: posts,
-          all_user: users,
-        });
+//actions to show posts.
+module.exports.home = async function (req, res) {
+  //--- the populate in mongoose use to be a reference to same db for different collection
+  try {
+    let posts = await Post.find({})
+      //finding the user
+      .populate("user")
+      //finding the comments of the same post from all users
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+        },
       });
+
+    let users = await User.find({});
+    return res.render("home", {
+      title: "Codeial | Home",
+      posts: posts,
+      all_user: users,
     });
+  } catch (error) {
+    console.log("Error ", error);
+    return;
+  }
 };
