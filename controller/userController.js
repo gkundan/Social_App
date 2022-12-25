@@ -74,6 +74,8 @@ module.exports.signIn = function (req, res) {
 
 //sign in session{session is like when the user sign Out is then there is no user }..
 module.exports.createSession = function (req, res) {
+  //show flash messages..
+  req.flash("success", "Logged_In Successful");
   /// passport session..'
   return res.redirect("/");
 };
@@ -81,6 +83,8 @@ module.exports.createSession = function (req, res) {
 //sign Out action
 module.exports.destroySession = function (req, res) {
   req.logout(function (err) {
+    //show flash messages
+    req.flash("success", "You Have Logged Out!");
     if (err) {
       return next(err);
     }
