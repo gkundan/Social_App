@@ -11,11 +11,19 @@ module.exports.create = async function (req, res) {
         post: req.body.post,
         user: req.user._id,
       });
-      // handle error
 
       post.comments.push(comment);
       post.save();
 
+      //ajax request check
+      if(req.xhr){
+        return res.status(200).json({
+          data:{
+            comment:comment
+          },
+          message:"Comment Created !"
+        })
+      }
       req.flash('success', 'Your Comment Has Been Added !')
       res.redirect("/");
     }

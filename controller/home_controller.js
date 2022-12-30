@@ -7,6 +7,8 @@ module.exports.home = async function (req, res) {
   //--- the populate in mongoose use to be a reference to same db for different collection
   try {
     let posts = await Post.find({})
+      //sort the posts
+      .sort('-createdAt')
       //finding the user
       .populate("user")
       //finding the comments of the same post from all users
