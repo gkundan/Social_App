@@ -16,43 +16,78 @@ module.exports.create = async function (req, res) {
       post.save();
 
       //ajax request check
-      if(req.xhr){
+      if (req.xhr) {
         return res.status(200).json({
-          data:{
-            comment:comment
+          data: {
+            comment: comment
           },
-          message:"Comment Created !"
+          message: "Comment Created !"
         })
       }
       req.flash('success', 'Your Comment Has Been Added !')
       res.redirect("/");
     }
   } catch (err) {
-     req.flash('error', err);
-     return res.redirect('back');
+    req.flash('error', err);
+    return res.redirect('back');
   }
 };
 
 //deleting the comment
-module.exports.destroy = function (req, res) {
-  let id = req.params.id;
-  // console.log(id);
-  Comments.findById(id, function (err, comment) {
+module.exports.destroy = async function (req, res) {
+  try {
+    let id = req.params.id;
+    console.log("From destroy ",id);
+    let comment = await Comments.findById(id);
     if (comment.user == req.user.id) {
       let postId = comment.post;
       comment.remove();
-      
-      req.flash('success', 'Your Comment Has Been Deleted !')
-      
-      Post.findByIdAndUpdate(
-        postId,
-        { $pull: { comments: req.params.id } },
-        function (err, post) {
-          return res.redirect("back");
-        }
-      );
-    } else {
-      return res.redirect("back");
+      let post = await Post.findByIdAndUpdate(postId,{$pull:{comment:id}});
+      if(req.xhr){
+              return res.status(200).json({          
+                data:{
+                  comment_id: id,
+                },
+                message:"comment get deleted !",
+              });
+            };
+
     }
-  });
+    // await Comments.findById(id, function (err, comment) {
+    //   if (comment.user == req.user.id) {
+    //     let postId = comment.post;
+    //     comment.remove();
+    //     let post = await 
+    //     //for ajax code.
+    //     if(req.xhr){
+    //       return res.status(200).json({          
+    //         data:{
+    //           comment_id: id,
+    //         },
+    //         message:"comment get deleted !",
+    //       });
+    //     };
+    //     req.flash('success', 'Your Comment Has Been Deleted !')
+
+        // Post.findByIdAndUpdate(
+        //   postId,
+        //   { $pull: { comments: req.params.id } },
+        //   function (err, post) {
+        //     if(post){
+        //       return res.redirect("back");
+        //     }else{
+        //       console.log(err);
+        //     }
+            
+        //   }
+        // );
+    //   } else {
+    //     return res.redirect("back");
+    //   }
+    // });
+  } catch (error) {
+    req.flash('error', error)
+    return res.redirect('back');
+  }
+
 };

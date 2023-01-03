@@ -12,7 +12,8 @@ module.exports.create = async function (req, res) {
     if(req.xhr){
       return res.status(200).json({
         data:{
-          post:post
+          post:post,
+          user:req.user
         },
         message:"Post Created!"
       })
@@ -29,28 +30,23 @@ module.exports.create = async function (req, res) {
 //
 //deleting the post..
 module.exports.destroy = async function (req, res) {
-  console.log(req.params.id);
   try {
     let id = req.params.id;
     id = id.trim();
     let post = await Post.findById(id);
-
-    //.id means converting the objectId into String
-
     if (post.user == req.user.id) {
       post.remove();
-
 
       await Comment.deleteMany({ post: id });
       //for the ajax code.
       if(req.xhr){
-        return res.status(200).json({
+        return res.status(200).json({          
           data:{
-            post_id:req.params.id
+            post_id: id,
           },
-          message:"Post Deleted !"
-        })
-      }
+          message:"Post and associated comment get deleted !",
+        });
+      };
 
       req.flash('success', 'Post and associated comment get deleted !')
       return res.redirect("back");

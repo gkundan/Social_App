@@ -11,8 +11,19 @@
                 url: "/posts/create",
                 data: newPostForm.serialize(),
                 success: function (data) {
-                    let newPost = newPostDom(data.data.post);
+                    console.log(data);
+                    let newPost = newPostDom(data.data.post,data.data.user);
                     $('#post-list-container>ul').prepend(newPost)
+                    deletePost($(' .delete-post-button', newPost))
+
+                    new Noty({
+                        theme: 'relax',
+                        text: data.message,
+                        type: 'success',
+                        layout: "topRight",
+                        timeout: 1500
+
+                    }).show();
                 }, error: function (error) {
                     console.log(error.responseText);
                 }
@@ -21,7 +32,7 @@
     };
 
     //method to create a post in DOM 
-    let newPostDom = function (post) {
+    let newPostDom = function (post,user) {
         return $(`<li id="post-${post._id}">
         <p>
             <!-- ///delete button -->
@@ -30,7 +41,7 @@
             </small>
             ${post.content}
             <br />
-            <small>${post.user.name}</small>
+            <small>${user.name}</small>
         </p>
         <div class="comment-box">
            
@@ -49,7 +60,7 @@
         </div>
         </div>
     </li>`)
-    }
+    };
 
 
 
@@ -63,7 +74,16 @@
                 type: 'get',
                 url: $(deleteLink).prop('href'),
                 success: function (data) {
-                    $(`#post-${data.data.post._id}`).remove();
+                    console.log(data);
+                    $(`#post-${data.data.post_id}`).remove();
+                    new Noty({
+                        theme: 'relax',
+                        text:data.message,
+                        type: 'success',
+                        layout: "topRight",
+                        timeout: 1500
+
+                    }).show();
                 },
                 error: function (err) {
                     console.log(err.responseText)
@@ -73,8 +93,17 @@
         })
     }
 
-
+    let convertPostToAjax = function(){
+        
+        $('#post-ul > li').each(function(){
+            deletePost($(' .delete-post-button', $(this)));
+            let postID = $(this).prop('id').split('-')[1];
+            new createComment(postID);  
+        });
+        
+    }
 
     createPost();
+    convertPostToAjax();
 };
 
