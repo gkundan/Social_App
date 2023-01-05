@@ -19,7 +19,9 @@ module.exports.create = async function (req, res) {
       if (req.xhr) {
         return res.status(200).json({
           data: {
-            comment: comment
+            comment: comment,
+            user:req.user
+
           },
           message: "Comment Created !"
         })
@@ -37,54 +39,27 @@ module.exports.create = async function (req, res) {
 module.exports.destroy = async function (req, res) {
   try {
     let id = req.params.id;
-    console.log("From destroy ",id);
+    console.log("From destroy ", id);
     let comment = await Comments.findById(id);
     if (comment.user == req.user.id) {
       let postId = comment.post;
       comment.remove();
-      let post = await Post.findByIdAndUpdate(postId,{$pull:{comment:id}});
-      if(req.xhr){
-              return res.status(200).json({          
-                data:{
-                  comment_id: id,
-                },
-                message:"comment get deleted !",
-              });
-            };
 
+      let post = await Post.findByIdAndUpdate(postId, { $pull: { comment: id } });
+      if (req.xhr) {
+        return res.status(200).json({
+          data: {
+            comment_id: id,
+          },
+          message: "comment get deleted !",
+        });
+      };
+    
+    return res.redirect('back');
+      
+    }else{
+      return res.redirect('back');
     }
-    // await Comments.findById(id, function (err, comment) {
-    //   if (comment.user == req.user.id) {
-    //     let postId = comment.post;
-    //     comment.remove();
-    //     let post = await 
-    //     //for ajax code.
-    //     if(req.xhr){
-    //       return res.status(200).json({          
-    //         data:{
-    //           comment_id: id,
-    //         },
-    //         message:"comment get deleted !",
-    //       });
-    //     };
-    //     req.flash('success', 'Your Comment Has Been Deleted !')
-
-        // Post.findByIdAndUpdate(
-        //   postId,
-        //   { $pull: { comments: req.params.id } },
-        //   function (err, post) {
-        //     if(post){
-        //       return res.redirect("back");
-        //     }else{
-        //       console.log(err);
-        //     }
-            
-        //   }
-        // );
-    //   } else {
-    //     return res.redirect("back");
-    //   }
-    // });
   } catch (error) {
     req.flash('error', error)
     return res.redirect('back');

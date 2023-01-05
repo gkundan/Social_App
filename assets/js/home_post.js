@@ -98,7 +98,7 @@
         $('#post-ul > li').each(function(){
             deletePost($(' .delete-post-button', $(this)));
             let postID = $(this).prop('id').split('-')[1];
-            new createComment(postID);  
+            // new createComment(postID);  
         });
         
     }
