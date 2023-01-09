@@ -1,20 +1,69 @@
-<link rel="stylesheet" href="/css/userProfile.css">
+<link rel="stylesheet" href="/css/userProfile.css" />
 
-<div class="profile-main">
-    <h1>
-        Codeial/ User Profile
-    </h1>
+<div class="container">
+  <% if(user.id == profile_user.id){ %>
+  <!-- if the user match then show thw update profile page -->
+  <div class="form-div">
+    <form
+      action="/users/update/<%= profile_user.id %>"
+      enctype="multipart/form-data"
+      method="post"
+    >
+      <div class="profile_pic">
+        <img src="<%= user.avatar %>" alt="<%= user.name %>" width="100" />
+      </div>
+      <div class="image-upload">
+        <input
+          type="file"
+          name="avatar"
+          placeholder="Profile Picture"
+          oninput="pic.src=window.URL.createObjectURL(this.files[0])"
+        />
+      </div>
+      <!-- <input type="file" name="avatar" placeholder="Profile Picture"> -->
+      <div id="image-preview">
+        <img id="pic" width="100" />
+      </div>
+      <div>
+        <div>
+          <label for="Name">Update Your Name </label>
+        </div>
+        <div>
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value="<%= profile_user.name %>"
+            required
+          />
+        </div>
+      </div>
+      <!-- // -->
+      <div>
+        <div><label for="Email">Update Your Email Address</label></div>
+        <div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            value="<%= profile_user.email%>"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- // -->
+
+      <button type="submit" id="update-btn">Update</button>
+    </form>
+  </div>
+
+  <%}else{%>
+  <!-- if the user doesn't matched then show only profile  -->
+  <div id="not-admin-user">
+    <p><%= profile_user.name %></p>
+    <p><%= profile_user.email %></p>
+  </div>
+
+  <%}%>
 </div>
-
-<% if(user.id == profile_user.id){ %>
-<!-- if the user match then show thw update profile page -->
-<form action="/users/update/<%= profile_user.id %>" method="post">
-    <input type="text" name="name" placeholder="Your Name" value="<%= profile_user.name %>" required>
-    <input type="email" name="email" placeholder="Your Email" value="<%= profile_user.email%>" required>
-    <button type="submit">Update</button>
-</form>
-<%}else{%>
-<!-- if the user doesn't matched then show only profile  -->
-<p><%= profile_user.name %></p>
-<p><%= profile_user.email %></p>
-<%}%>

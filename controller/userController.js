@@ -1,4 +1,8 @@
 const User = require("../models/user");
+
+//deleting the previous file after the update
+const fs = require("fs");
+const path = require("path");
 ////******    All the User Action Controller */
 
 // profile render or userHome page
@@ -12,11 +16,33 @@ module.exports.profile = function (req, res) {
   });
 };
 // **** profile update
-module.exports.update = function (req, res) {
+module.exports.update = async function (req, res) {
   if (req.user.id == req.params.id) {
-    User.findByIdAndUpdate(req.params.id, req.body, function (err, user) {
+    try {
+      let user = await User.findById(req.params.id);
+      User.uploadedAvatar(req, res, function (err) {
+        if (err) {
+          console.log("__Multer Error__", err);
+        }
+        user.name = req.body.name;
+        user.email = req.body.email;
+
+        if (req.file) {
+          //delete the previous file after uploaded new one.
+          if (user.avatar) {
+            fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+          }
+          //this is saving the path of the uploaded file into the avatar filed in the user
+          user.avatar = User.avatarPath + "/" + req.file.filename;
+        }
+        user.save();
+        return res.redirect("back");
+      });
+    } catch (error) {
+      console.log(error);
+      req.flash("error", error);
       return res.redirect("back");
-    });
+    }
   } else {
     return res.status(401).send("Unauthorized");
   }

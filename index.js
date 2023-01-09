@@ -30,6 +30,8 @@ app.use(
 app.use(express.urlencoded());
 app.use(cookieParser());
 app.use(express.static("./assets"));
+//make the upload path available for the browser.
+app.use("/upload", express.static(__dirname + "/upload"));
 // layout calls before routes always ...***** /
 app.use(expressLayouts);
 
