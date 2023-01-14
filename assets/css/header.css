@@ -7,6 +7,9 @@ nav {
 nav .logo {
   font-weight: 900;
   color: antiquewhite; }
+  nav .logo a {
+    text-decoration: none;
+    color: aliceblue; }
 
 .logo:hover {
   text-decoration: underline;

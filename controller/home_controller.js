@@ -8,7 +8,7 @@ module.exports.home = async function (req, res) {
   try {
     let posts = await Post.find({})
       //sort the posts
-      .sort('-createdAt')
+      .sort("-createdAt")
       //finding the user
       .populate("user")
       //finding the comments of the same post from all users
@@ -20,7 +20,7 @@ module.exports.home = async function (req, res) {
       });
 
     let users = await User.find({});
-    console.log(posts);
+    // console.log(posts);
     return res.render("home", {
       title: "Codeial | Home",
       posts: posts,
