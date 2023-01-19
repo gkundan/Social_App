@@ -1,5 +1,6 @@
 const Comments = require("../models/comment");
 const Post = require("../models/post");
+const commentMailer = require("../mailer/newCommentMailer");
 //
 
 module.exports.create = async function (req, res) {
@@ -10,28 +11,33 @@ module.exports.create = async function (req, res) {
         content: req.body.content,
         post: req.body.post,
         user: req.user._id,
+        email: req.user.email,
       });
 
       post.comments.push(comment);
       post.save();
+
+      //for the mailer
+      let newcomments = await comment.populate("user", "name email");
+
+      // console.log("from Controller__", newcomments);
+      commentMailer.newComment(newcomments);
 
       //ajax request check
       if (req.xhr) {
         return res.status(200).json({
           data: {
             comment: comment,
-            user:req.user
-
           },
-          message: "Comment Created !"
-        })
+          message: "Comment Created !",
+        });
       }
-      req.flash('success', 'Your Comment Has Been Added !')
+      req.flash("success", "Your Comment Has Been Added !");
       res.redirect("/");
     }
   } catch (err) {
-    req.flash('error', err);
-    return res.redirect('back');
+    req.flash("error", err);
+    return res.redirect("back");
   }
 };
 
@@ -45,7 +51,9 @@ module.exports.destroy = async function (req, res) {
       let postId = comment.post;
       comment.remove();
 
-      let post = await Post.findByIdAndUpdate(postId, { $pull: { comment: id } });
+      let post = await Post.findByIdAndUpdate(postId, {
+        $pull: { comment: id },
+      });
       if (req.xhr) {
         return res.status(200).json({
           data: {
@@ -53,16 +61,14 @@ module.exports.destroy = async function (req, res) {
           },
           message: "comment get deleted !",
         });
-      };
-    
-    return res.redirect('back');
-      
-    }else{
-      return res.redirect('back');
+      }
+
+      return res.redirect("back");
+    } else {
+      return res.redirect("back");
     }
   } catch (error) {
-    req.flash('error', error)
-    return res.redirect('back');
+    req.flash("error", error);
+    return res.redirect("back");
   }
-
 };
