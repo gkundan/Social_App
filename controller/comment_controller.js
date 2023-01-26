@@ -13,7 +13,6 @@ module.exports.create = async function (req, res) {
         content: req.body.content,
         post: req.body.post,
         user: req.user._id,
-        email: req.user.email,
       });
 
       post.comments.push(comment);

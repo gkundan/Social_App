@@ -23,6 +23,7 @@ router.use("/comments", require("./comment"));
 //api router../
 router.use("/api", require("./api"));
 
-//
+//forget password
+router.use("/forget-password", require("./passwordRoute"));
 
 module.exports = router;
