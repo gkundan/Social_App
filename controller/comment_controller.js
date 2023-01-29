@@ -33,6 +33,8 @@ module.exports.create = async function (req, res) {
         console.log("Job Enqueued", job.id);
       });
 
+      // destroy the associated likes for this comment
+      await Like.deleteMany({ likeable: comment._id, onModel: "Comment" });
       //ajax request check
       if (req.xhr) {
         return res.status(200).json({

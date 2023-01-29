@@ -1,38 +1,48 @@
-<link rel="stylesheet" href="/css/home.css">
+<link rel="stylesheet" href="/css/home.css" />
 
 <div id="home-container">
+  <section id="feed-post">
+    <div class="post-form-div">
+      <h3>Posts Here !</h3>
+      <% if(locals.user) {%>
+      <form action="/posts/create" id="new-post-form" method="post">
+        <textarea
+          name="content"
+          id=""
+          cols="30"
+          rows="5"
+          placeholder="Enter Your Thought.."
+        ></textarea>
+        <br />
+        <button type="submit">Post</button>
+      </form>
+      <% } %>
+    </div>
+    <!-- //post show div  -->
+    <div class="post-box" id="post-list-container">
+      <ul id="post-ul">
+        <% for (post of posts) { %> <%-include('_post')-%> <% } %>
+      </ul>
+    </div>
+  </section>
 
-    <section id="feed-post">
-        <div class="post-form-div">
-            <h3>Posts Here !</h3>
-            <% if(locals.user) {%>
-            <form action="/posts/create" id="new-post-form" method="post">
-                <textarea name="content" id="" cols="30" rows="5" placeholder="Enter Your Thought.."></textarea>
-                <br />
-                <button type="submit">Post</button>
-            </form>
-            <% } %>
-        </div>
-        <!-- //post show div  -->
-        <div class="post-box" id="post-list-container">
-            <ul id="post-ul">
-                <% for (post of posts) { %>
-
-                <%-include('_post')-%>
-                <% } %>
-            </ul>
-        </div>
-    </section>
-
-    <!-- //user lists as friends  -->
-    <section id="user-friends">
-        <h4>Friends</h4>
-        <% for (u of all_user){ %>
-        <p>
-            <a href="/users/profile/<%= u.id %>"><%= u.name %></a>
-        </p>
-        <%}%>
-</section>
-</div>  
+  <!-- //user lists as friends  -->
+  <section id="user-friends">
+    <h4>Friends</h4>
+    <% for (u of all_user){ %>
+    <p>
+      <a href="/users/profile/<%= u.id %>"><%= u.name %></a>
+    </p>
+    <%}%>
+  </section>
+</div>
 <script src="/js/home_post.js"></script>
 <script src="/js/home_comment.js"></script>
+<!--  import the script file for toggle likes, also run it over for the already present posts and comments on the page -->
+<script src="js/toggle_like.js"></script>
+<script>
+  $(".toggle-like-button").each(function () {
+    let self = this;
+    let toggleLike = new ToggleLike(self);
+  });
+</script>

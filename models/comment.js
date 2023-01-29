@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
 
-//Schema for Comments
-const commentsSchema = new mongoose.Schema(
+const commentSchema = new mongoose.Schema(
   {
     content: {
       type: String,
-      require: true,
+      required: true,
     },
-    //comment belong to a user an the post.
+    // comment belongs to a user
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -16,9 +15,17 @@ const commentsSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",
     },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Like",
+      },
+    ],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-const Comments = mongoose.model("Comment", commentsSchema);
-module.exports = Comments;
+const Comment = mongoose.model("Comment", commentSchema);
+module.exports = Comment;
