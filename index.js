@@ -3,6 +3,7 @@ const app = express();
 const port = 8000;
 const expressLayouts = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const db = require("./config/mongoose");
 //used for session cookies and passport auth
 const session = require("express-session");
@@ -41,7 +42,7 @@ app.use(expressLayouts);
 ///****     --- Views Engine..     */
 app.set("view engine", "ejs");
 app.set("views", "./views");
-
+app.use(bodyParser.json());
 ///**** log IN session and auth */
 // monogo store is used to store the session cookies in db
 app.use(

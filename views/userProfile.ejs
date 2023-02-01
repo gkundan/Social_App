@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/css/userProfile.css" />
 
 <div class="container">
-  <% if(user.id == profile_user.id){ %>
+  <% if(user._id == profile_user.id){ %>
   <!-- if the user match then show thw update profile page -->
   <div class="form-div">
     <form
@@ -63,7 +63,18 @@
   <div id="not-admin-user">
     <p><%= profile_user.name %></p>
     <p><%= profile_user.email %></p>
+    <div class="add-friend">
+      <button
+        id="followBtn"
+        data-following-id="{{<%=profile_user.id %>}}"
+        data-follower-id="{{ <%=user._id   %> }}"
+      >
+        Follow
+      </button>
+    </div>
   </div>
 
   <%}%>
 </div>
+
+<script src="/js/makeFriends.js"></script>
