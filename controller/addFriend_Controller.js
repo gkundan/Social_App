@@ -1,57 +1,56 @@
+const mongoose = require("mongoose");
 const User = require("../models/user");
 const Friend = require("../models/friendship");
+//
 
-//add friends..
-module.exports.checkUser = async (req, res, next) => {
+//
+module.exports.follow = async (req, res) => {
+  // console.log("from add friend controller", req.body);
+  ///
   try {
-    const followerId = req.body.followerId;
-    const followingId = req.body.followingId;
-    const follower = await User.findById(followerId);
-    if (!follower) {
-      return res.status(400).send({ error: "Follower not found" });
+    const followerId = mongoose.Types.ObjectId(req.body.followerId)
+      .toString()
+      .trim();
+    const followingId = mongoose.Types.ObjectId(req.body.followingId)
+      .toString()
+      .trim();
+    // Check if the followerId and followingId values are valid ObjectId values
+    if (
+      !mongoose.Types.ObjectId.isValid(followerId) ||
+      !mongoose.Types.ObjectId.isValid(followingId)
+    ) {
+      return res.status(400).send({ error: "Invalid ObjectId value" });
     }
-    const following = await User.findById(followingId);
-    if (!following) {
-      return res.status(400).send({ error: "Following not found" });
-    }
-    req.follower = follower;
-    req.following = following;
-    next();
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-};
 
-exports.follow = async (req, res) => {
-  try {
-    const followerId = req.body.followerId;
-    const followingId = req.body.followingId;
+    //check the user id already in the database
+    const existingFriendship = await Friend.findOne({
+      followerId,
+      followingId,
+    });
+    if (existingFriendship) {
+      console.log("ALready Friends");
+      return res.status(400).send({ error: "Friend is already followed!" });
+    }
+    //create new friendship
     const friendship = new Friend({
       from_user: followerId,
       to_user: followingId,
     });
     await friendship.save();
-    req.follower.friendships.push(friendship._id);
-    await req.follower.save();
-    res.send({ message: "Followed successfully" });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-};
-
-exports.unfollow = async (req, res) => {
-  try {
-    const followerId = req.body.followerId;
-    const followingId = req.body.followingId;
-    const friendship = await Friend.findOne({
-      from_user: followerId,
-      to_user: followingId,
+    console.log("friendship ", friendship);
+    //update the user friendship array
+    const user = await User.findById(followerId);
+    user.friendships.push(friendship._id);
+    await user.save();
+    console.log("user form add friend controler", user);
+    //return the updated follower count
+    const followerCount = await User.countDocuments({
+      friendships: friendship,
     });
-    await friendship.remove();
-    req.follower.friendships.pull(friendship._id);
-    await req.follower.save();
-    res.send({ message: "Unfollowed successfully" });
+
+    return res.status(200).send({ followerCount });
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    console.log("Error from controller", error);
+    return res.status(500).send({ error: error.message });
   }
 };

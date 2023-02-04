@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 
 ///*connect to database* */
-mongoose.connect("mongodb://127.0.0.1/codeial_development");
+mongoose.connect("mongodb://127.0.0.1/codeial_development", {
+  useNewUrlParser: true,
+});
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Error Connecting to DB."));

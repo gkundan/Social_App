@@ -5,6 +5,7 @@ const User = require("../models/user");
 //actions to show posts.
 module.exports.home = async function (req, res) {
   //--- the populate in mongoose use to be a reference to same db for different collection
+
   try {
     let posts = await Post.find({})
       //sort the posts
@@ -19,12 +20,26 @@ module.exports.home = async function (req, res) {
         },
       });
 
+    //getting all user
     let users = await User.find({});
-    // console.log(posts);
+
+    //getting current
+    if (req.isAuthenticated()) {
+      const currentUserId = req.user._id;
+      const currentUser = await User.findById(currentUserId).populate(
+        "friendships.to_user"
+      );
+
+      console.log("from home controller", currentUser);
+    } else {
+      console.log("not found");
+    }
+
     return res.render("home", {
       title: "Codeial | Home",
       posts: posts,
       all_user: users,
+      friends: currentUser,
     });
   } catch (error) {
     console.log("Error ", error);

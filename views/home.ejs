@@ -32,7 +32,20 @@
     <div>
       <h4>Friends</h4>
       <p>
-        <small>No friend are found.</small>
+        <% if(locals.user) {%>
+          <h2>Following Users</h2>         
+            <ul>
+              <% for (var i = 0; i < friends.length; i++) { %>
+                <div>
+                  <p>Username: <%= friends[i].username %></p>
+                  <p>Name: <%= friends[i].name %></p>
+                </div>
+              <% } %>
+              
+            </ul>
+          <% } else { %>
+            <p>You are not following any users.</p>
+          <% } %>
       </p>
     </div>
     <!-- //all the users  -->
@@ -57,3 +70,5 @@
     let toggleLike = new ToggleLike(self);
   });
 </script>
+
+<script src="/js/addfriends.js"></script>
